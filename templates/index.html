@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroPulse | Climate Data Analytics & AI Forecasting</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-blue-500 selection:text-white">
+
+  <!-- Navigation Bar -->
+  <nav class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
+          <i class="fa-solid fa-cloud-bolt text-lg"></i>
+        </div>
+        <div>
+          <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">AeroPulse Analytics</span>
+          <span class="hidden sm:inline-block ml-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">BE23CS403 Capstone</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- Hero Overview Banner -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-900/50 via-slate-900 to-indigo-950 border border-slate-800 p-6 sm:p-8 shadow-2xl">
+      <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative z-10">
+        <div class="lg:col-span-2 space-y-4">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold">
+            <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+            <span>Historical Dataset Analysis (180 Observations)</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Weather Insights & Statistical Forecasting Dashboard</h1>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Powered by Python data science logic. Cleaning missing records, computing descriptive statistics, 
+            7-day rolling moving averages, and simple linear regression models in real-time.
+          </p>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <div class="bg-slate-800/60 backdrop-blur border border-slate-700/50 px-4 py-2 rounded-2xl flex items-center space-x-3">
+              <i class="fa-solid fa-location-dot text-rose-400 text-sm"></i>
+              <div>
+                <p class="text-[10px] uppercase font-bold text-slate-400">Location</p>
+                <p class="text-xs font-semibold text-white">Salem Region (Simulated)</p>
+              </div>
+            </div>
+            <div class="bg-slate-800/60 backdrop-blur border border-slate-700/50 px-4 py-2 rounded-2xl flex items-center space-x-3">
+              <i class="fa-solid fa-calendar text-blue-400 text-sm"></i>
+              <div>
+                <p class="text-[10px] uppercase font-bold text-slate-400">Date Range</p>
+                <p class="text-xs font-semibold text-white">Jan 01 - Jun 29, 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weather Status Card -->
+        <div class="bg-slate-900/90 border border-slate-700/70 rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-4">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Average Climate State</p>
+              <h3 class="text-2xl font-bold text-white mt-1">Warm & Moderate</h3>
+            </div>
+            <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl">
+              <i class="fa-solid fa-sun text-2xl"></i>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-800">
+            <div>
+              <p class="text-[11px] text-slate-400">Mean Temperature</p>
+              <p id="hero-temp" class="text-lg font-bold text-amber-400">-- °C</p>
+            </div>
+            <div>
+              <p class="text-[11px] text-slate-400">Mean Humidity</p>
+              <p id="hero-humidity" class="text-lg font-bold text-cyan-400">-- %</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Forecast Simulator Tool -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles text-blue-400"></i> AI Relative Humidity Predictor
+          </h2>
+          <p class="text-xs text-slate-400">Adjust the target temperature to estimate relative humidity using Python linear regression model.</p>
+        </div>
+        <span class="text-xs font-mono bg-slate-950 border border-slate-800 text-blue-400 px-3 py-1 rounded-lg">
+          Formula: Humidity = 89.08 - 0.74 × Temp
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-slate-950/60 p-5 rounded-xl border border-slate-800/80">
+        <div class="space-y-2 md:col-span-2">
+          <div class="flex justify-between text-xs font-semibold">
+            <span class="text-slate-400">Input Air Temperature</span>
+            <span id="sliderVal" class="text-amber-400 font-mono text-sm">28.5 °C</span>
+          </div>
+          <input type="range" id="tempRange" min="15" max="42" step="0.5" value="28.5" oninput="updatePredictionFromSlider(this.value)" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+          <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+            <span>15°C (Cool)</span>
+            <span>28.5°C (Average)</span>
+            <span>42°C (Extreme)</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-700/80 rounded-xl p-4 text-center space-y-1">
+          <p class="text-xs text-slate-400 font-medium">Estimated Relative Humidity</p>
+          <p id="calcHumidity" class="text-3xl font-black text-cyan-400">67.9 %</p>
+          <div id="comfortBadge" class="inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 mt-1">
+            Optimal Comfort
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Metric Cards Grid -->
+    <div id="metricsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      <!-- Dynamic Metric Cards Loaded via JavaScript -->
+    </div>
+
+    <!-- Chart Tabs Section -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h3 class="text-lg font-bold text-white">Visual Analytics & Historical Trends</h3>
+          <p class="text-xs text-slate-400">Interactive charts powered by Chart.js and aggregated Python arrays.</p>
+        </div>
+        
+        <!-- Tab Switches -->
+        <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-semibold">
+          <button onclick="switchTab('daily')" id="tab-daily" class="px-4 py-2 rounded-lg bg-blue-600 text-white transition">Daily Temperature</button>
+          <button onclick="switchTab('monthly')" id="tab-monthly" class="px-4 py-2 rounded-lg text-slate-400 hover:text-white transition">Monthly Averages</button>
+        </div>
+      </div>
+
+      <!-- Chart Container -->
+      <div class="h-80 w-full relative">
+        <canvas id="mainChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Statistical Breakdown Table -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-base font-bold text-white">Statistical Measures Summary</h3>
+          <p class="text-xs text-slate-400">Transcribed descriptive statistical metrics calculated across 180 clean records.</p>
+        </div>
+        <span class="text-xs text-slate-500 font-mono">Sample ddof=1</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-950 text-slate-400 font-semibold uppercase tracking-wider border-b border-slate-800">
+            <tr>
+              <th class="p-3.5">Variable</th>
+              <th class="p-3.5">Mean</th>
+              <th class="p-3.5">Median</th>
+              <th class="p-3.5">Std Deviation</th>
+              <th class="p-3.5">Minimum</th>
+              <th class="p-3.5">Maximum</th>
+            </tr>
+          </thead>
+          <tbody id="statsTableBody" class="divide-y divide-slate-800/60 text-slate-200">
+            <!-- Dynamic Rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Developer & Pipeline Log Accordion -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h4 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-code text-indigo-400"></i> Data Management & Execution Pipeline
+          </h4>
+          <p class="text-xs text-slate-400">Upload a custom CSV file or view the Python backend execution log.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="loadDefaultData()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-semibold transition border border-slate-700">
+            <i class="fa-solid fa-rotate-right mr-1.5"></i> Reset Default Data
+          </button>
+          <label class="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold cursor-pointer transition flex items-center">
+            <i class="fa-solid fa-upload mr-1.5"></i> Upload CSV
+            <input type="file" id="csvInput" onchange="uploadCSV()" class="hidden" accept=".csv">
+          </label>
+        </div>
+      </div>
+
+      <div id="logConsole" class="bg-slate-950 p-4 rounded-xl font-mono text-xs text-emerald-400 border border-slate-800 space-y-1.5 max-h-36 overflow-y-auto">
+        <!-- Log messages -->
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let activeData = null;
+    let chartInstance = null;
+    let activeTab = 'daily';
+
+    async function loadDefaultData() {
+      const res = await fetch('/api/analyze');
+      activeData = await res.json();
+      renderDashboard();
+    }
+
+    async function uploadCSV() {
+      const input = document.getElementById('csvInput');
+      if (!input.files[0]) return;
+      const formData = new FormData();
+      formData.append('file', input.files[0]);
+
+      const res = await fetch('/api/analyze', { method: 'POST', body: formData });
+      activeData = await res.json();
+      renderDashboard();
+    }
+
+    async function updatePredictionFromSlider(val) {
+      document.getElementById('sliderVal').innerText = `${val} °C`;
+      const res = await fetch(`/api/predict?temp=${val}`);
+      const data = await res.json();
+      
+      document.getElementById('calcHumidity').innerText = `${data.predicted_humidity} %`;
+      const badge = document.getElementById('comfortBadge');
+      badge.innerText = data.comfort_status;
+      badge.className = `inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full mt-1 ${data.comfort_badge}`;
+    }
+
+    function renderDashboard() {
+      if (!activeData) return;
+
+      // Update Hero Cards
+      const tempObj = activeData.stats.find(s => s.key === 'temperature_c');
+      const humObj = activeData.stats.find(s => s.key === 'humidity_pct');
+      
+      document.getElementById('hero-temp').innerText = `${tempObj.mean} °C`;
+      document.getElementById('hero-humidity').innerText = `${humObj.mean} %`;
+
+      // Render Metric Cards
+      const metricsGrid = document.getElementById('metricsGrid');
+      metricsGrid.innerHTML = activeData.stats.map(s => `
+        <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between space-y-2 hover:border-slate-700 transition">
+          <div class="flex justify-between items-center">
+            <span class="text-xs text-slate-400 font-medium">${s.label}</span>
+            <i class="fa-solid ${s.icon} ${s.color} text-sm"></i>
+          </div>
+          <div>
+            <p class="text-xl font-extrabold text-white">${s.mean} <span class="text-xs font-normal text-slate-400">${s.unit}</span></p>
+            <p class="text-[10px] text-slate-500">Range: ${s.min} - ${s.max} ${s.unit}</p>
+          </div>
+        </div>
+      `).join('');
+
+      // Render Table
+      const tbody = document.getElementById('statsTableBody');
+      tbody.innerHTML = activeData.stats.map(s => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="p-3.5 font-medium text-white flex items-center gap-2">
+            <i class="fa-solid ${s.icon} ${s.color}"></i> ${s.label}
+          </td>
+          <td class="p-3.5 font-semibold text-slate-200">${s.mean} ${s.unit}</td>
+          <td class="p-3.5">${s.median} ${s.unit}</td>
+          <td class="p-3.5 text-slate-400">${s.std}</td>
+          <td class="p-3.5 text-amber-400/90">${s.min} ${s.unit}</td>
+          <td class="p-3.5 text-emerald-400/90">${s.max} ${s.unit}</td>
+        </tr>
+      `).join('');
+
+      // Render Log
+      const logConsole = document.getElementById('logConsole');
+      logConsole.innerHTML = activeData.logs.map(l => `<p><span class="text-slate-500">></span> ${l}</p>`).join('') + 
+        `<p class="text-blue-400"><span class="text-slate-500">></span> Statistical models & aggregations executed smoothly.</p>`;
+
+      // Render Chart
+      renderChart();
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.getElementById('tab-daily').className = tab === 'daily' ? 'px-4 py-2 rounded-lg bg-blue-600 text-white transition' : 'px-4 py-2 rounded-lg text-slate-400 hover:text-white transition';
+      document.getElementById('tab-monthly').className = tab === 'monthly' ? 'px-4 py-2 rounded-lg bg-blue-600 text-white transition' : 'px-4 py-2 rounded-lg text-slate-400 hover:text-white transition';
+      renderChart();
+    }
+
+    function renderChart() {
+      if (!activeData) return;
+      const ctx = document.getElementById('mainChart').getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+
+      if (activeTab === 'daily') {
+        const labels = activeData.records.map(r => r.date_str);
+        const temps = activeData.records.map(r => r.temperature_c);
+        const rolling = activeData.records.map(r => r.temp_7d_rolling);
+
+        chartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              { label: 'Daily Temp (°C)', data: temps, borderColor: '#3b82f6', borderWidth: 1.5, pointRadius: 0, tension: 0.2 },
+              { label: '7-Day Rolling Mean (°C)', data: rolling, borderColor: '#f59e0b', borderWidth: 2.5, pointRadius: 0, tension: 0.3 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans' } } } },
+            scales: {
+              x: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } },
+              y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }
+            }
+          }
+        });
+      } else {
+        const labels = activeData.monthly.map(m => m.month_name);
+        const mTemps = activeData.monthly.map(m => m.mean_temp);
+
+        chartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{ label: 'Mean Temperature (°C)', data: mTemps, backgroundColor: '#6366f1', borderRadius: 8 }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans' } } } },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: '#64748b' } },
+              y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }
+            }
+          }
+        });
+      }
+    }
+
+    window.onload = loadDefaultData;
+  </script>
+</body>
+</html>
